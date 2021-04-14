@@ -13,13 +13,16 @@ import config from '../auth/passport/config';
     TypeOrmModule.forFeature([UserRepository]),
     MailerModule.forRoot({
       transport: {
-        service: 'Naver',
-        host: 'smtp.naver.com',
+        service: 'gmail',
+        host: 'smtp.google.com',
         port: 587,
         //secure: false, // true for 465, false for other ports
         auth: {
-          user: config.EMAIL_ID, // generated ethereal user
-          pass: config.EMAIL_PASS, // generated ethereal password
+          type: 'OAuth2',
+          user: config.user, // generated ethereal user
+          clientId: config.clientID, // generated ethereal password
+          clientSecret: config.clientSecret,
+          refreshToken: config.refreshToken,
         },
       },
 

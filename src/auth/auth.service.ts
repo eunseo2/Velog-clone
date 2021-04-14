@@ -44,9 +44,21 @@ export class AuthService {
       const number: number = generateRandom(111111, 999999);
       await this.mailerService.sendMail({
         to: email, // list of receivers
-        from: 'dmstj7371@naver.com', // sender address
+        from: '20180972@sungshin.ac.kr', // sender address
         subject: '이메일 인증 요청 메일입니다.', // Subject line
-        html: '오른쪽 숫자 6자리를 입력해주세요:' + `<b> ${number}</b>`, // HTML body content
+        html: `
+        <h1>
+         velog 인증코드 메일
+        </h1>
+        <hr />
+        <br />
+        <p>안녕하세요 ${email}님 <p/>
+        <p>인증코드를 회원가입화면에 입력해주세요 : ${number} </p>
+        <br />
+        <hr />
+        <p><a href="http://localhost:3000/register">회원가입 하러 가기 </a></p>
+        <p>이 메일을 요청한 적이 없으시다면 무시하시기 바랍니다.</p>
+      `,
       });
       return number;
     } catch (err) {
