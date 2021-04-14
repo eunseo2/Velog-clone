@@ -12,7 +12,9 @@ typeorm
 $ npm install --save @nestjs/typeorm typeorm pg
 
 mariadb
-npm install mysql --save
+npm install --save @nestjs-modules/mailer nodemailer
+npm install --save handlebars
+
 ```
 
 ## Running the app

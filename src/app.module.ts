@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { User } from './entities/user.entity';
       isGlobal: true,
       envFilePath: '.env.development',
     }),
+
     TypeOrmModule.forRoot({
       type: 'mariadb',
       host: process.env.DB_HOST,
@@ -22,6 +24,7 @@ import { User } from './entities/user.entity';
       synchronize: true,
     }),
     AuthModule,
+    MailModule,
   ],
   controllers: [AppController],
 })

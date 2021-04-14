@@ -3,7 +3,7 @@
 /node_modules
 
 
-/src/auth/passport
+/src/auth/passport/config.ts
 .env.development
 
 # Logs
