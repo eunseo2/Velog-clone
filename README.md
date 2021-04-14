@@ -15,6 +15,11 @@ mariadb
 npm install --save @nestjs-modules/mailer nodemailer
 npm install --save handlebars
 
+# mail
+npm i nodemailer
+
+
+
 ```
 
 ## Running the app

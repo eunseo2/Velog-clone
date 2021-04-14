@@ -6,7 +6,10 @@ export class MailController {
   constructor(private readonly maileService: MailService) {}
 
   @Get()
-  sendMail(): any {
-    return this.maileService.sendMail();
+  async sendMail() {
+    const result = await this.maileService.sendMail();
+    console.log(result);
+
+    return result;
   }
 }
