@@ -11,7 +11,7 @@ export class User {
   @Column({ nullable: false })
   name: string;
   @Column()
-  GoogleID?: string;
+  providerID?: string;
   @Column()
   profile?: string;
 }

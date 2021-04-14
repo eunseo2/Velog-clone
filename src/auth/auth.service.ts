@@ -56,11 +56,35 @@ export class AuthService {
         <p>인증코드를 회원가입화면에 입력해주세요 : ${number} </p>
         <br />
         <hr />
-        <p><a href="http://localhost:3000/register">회원가입 하러 가기 </a></p>
+        <p><a href="http://localhost:3000/register?code=124e54578hjh">회원가입 하러 가기 </a></p>
         <p>이 메일을 요청한 적이 없으시다면 무시하시기 바랍니다.</p>
       `,
       });
       return number;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async sendMail2(email: string) {
+    try {
+      await this.mailerService.sendMail({
+        to: email, // list of receivers
+        from: '20180972@sungshin.ac.kr', // sender address
+        subject: 'velog-Login.', // Subject line
+        html: `
+        <h1>
+         velog Login 
+        </h1>
+        <hr />
+        <br />
+        <p>안녕하세요 ${email}님 <p/>
+        <p> 밑에 링크 누르면 velog 바로 시작할 수 있습니다.  </p>
+        <br />
+        <hr />
+        <p><a href="http://localhost:3000/velog.io">로그인 하러 가기 </a></p>
+      
+      `,
+      });
     } catch (err) {
       console.log(err);
     }

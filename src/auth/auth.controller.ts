@@ -26,7 +26,10 @@ export class AuthController {
         `email ID ${userData.email} not found 인증코드 발송했습니다.`,
       );
       return result;
+    } else {
+      const result = await this.authService.sendMail2(userData.email);
+      console.log(`${userData.email}로 로그인 요청했습니다`);
+      return result;
     }
-    return user;
   }
 }
