@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Redirect,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
+import { HttpCode } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -11,7 +19,9 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
 
+  @HttpCode(201)
   @Get('redirect')
+  @Redirect('http://localhost:3000/velog.io', 302)
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req) {
     return this.authService.googleLogin(req);

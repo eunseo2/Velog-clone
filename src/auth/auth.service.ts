@@ -20,12 +20,12 @@ export class AuthService {
       return 'No user from google';
     } else {
       let existsUser = null;
-      const name = req.user.name;
-      existsUser = await this.userRepository.findOne({ name: name });
+      const name = req.user.providerName;
+
+      existsUser = await this.userRepository.findOne({ providerName: name });
       console.log(existsUser);
       if (existsUser) {
         console.log('이미 저장했습니다');
-        return req.user;
       } else {
         return await this.userRepository.save(req.user);
       }
@@ -44,7 +44,7 @@ export class AuthService {
       const number: number = generateRandom(111111, 999999);
       await this.mailerService.sendMail({
         to: email, // list of receivers
-        from: '20180972@sungshin.ac.kr', // sender address
+        from: 'dmstj7371@naver.com', // sender address
         subject: '이메일 인증 요청 메일입니다.', // Subject line
         html: `
         <h1>
@@ -69,7 +69,7 @@ export class AuthService {
     try {
       await this.mailerService.sendMail({
         to: email, // list of receivers
-        from: '20180972@sungshin.ac.kr', // sender address
+        from: 'dmstj7371@naver.com', // sender address
         subject: 'velog-Login.', // Subject line
         html: `
         <h1>

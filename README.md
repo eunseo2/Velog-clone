@@ -18,7 +18,8 @@ npm install --save handlebars
 # mail
 npm i nodemailer
 
-
+jwt
+npm install --save @types/jsonwebtoken
 
 ```
 

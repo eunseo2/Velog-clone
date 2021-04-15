@@ -8,10 +8,16 @@ export class User {
   provider?: string;
   @Column({ nullable: false })
   email: string;
-  @Column({ nullable: false })
-  name: string;
+  @Column()
+  providerName: string;
   @Column()
   providerID?: string;
   @Column()
   profile?: string;
+  @Column()
+  username?: string;
+  @Column()
+  userID?: string;
+  @Column()
+  Intro?: string;
 }
