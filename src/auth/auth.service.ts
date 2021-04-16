@@ -77,7 +77,7 @@ export class AuthService {
     return user;
   }
 
-  async sendMail(email: string) {
+  async sendcodeMail(email: string) {
     try {
       const code: number = generateRandom(111111, 999999);
       await this.mailerService.sendMail({
@@ -94,17 +94,21 @@ export class AuthService {
         <p>인증코드를 회원가입화면에 입력해주세요 : ${code} </p>
         <br />
         <hr />
-        <p><a href="http://localhost:3000/register">회원가입 하러 가기 </a></p>
+        <p><a href="http://localhost:3000/register-form">회원가입 하러 가기 </a></p>
         <p>이 메일을 요청한 적이 없으시다면 무시하시기 바랍니다.</p>
       `,
       });
-      return code;
+      const result = {
+        code: code,
+        email: email,
+      };
+      return result;
     } catch (err) {
       console.log(err);
     }
   }
 
-  async sendMail2(email: string) {
+  async sendloginMail(email: string) {
     try {
       await this.mailerService.sendMail({
         to: email, // list of receivers
@@ -124,6 +128,9 @@ export class AuthService {
       
       `,
       });
+      return {
+        statuscode: 200,
+      }; // 회원가입 필요함 .
     } catch (err) {
       console.log(err);
     }

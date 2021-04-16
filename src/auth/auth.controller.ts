@@ -37,13 +37,13 @@ export class AuthController {
   async mail(@Body() userData: LoginUserDto) {
     const user = await this.authService.findUserEmail(userData.email);
     if (!user) {
-      const result = await this.authService.sendMail(userData.email);
+      const result = await this.authService.sendcodeMail(userData.email);
       console.log(
         `email ID ${userData.email} not found 인증코드 발송했습니다.`,
       );
       return result;
     } else {
-      const result = await this.authService.sendMail2(userData.email);
+      const result = await this.authService.sendloginMail(userData.email);
       console.log(`${userData.email}로 로그인 요청했습니다`);
       return result;
     }
