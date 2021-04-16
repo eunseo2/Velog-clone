@@ -38,11 +38,11 @@ export class AuthController {
     const user = await this.authService.findUserEmail(userData.email);
 
     if (!user) {
-      const result = await this.authService.sendcodeMail(userData.email);
+      const CodeEmail = await this.authService.sendcodeMail(userData.email);
       console.log(
         `email ID ${userData.email} not found 인증코드 발송했습니다.`,
       );
-      return result;
+      return CodeEmail;
     } else {
       const email = await this.authService.sendloginMail(userData.email);
       console.log(`${userData.email}로 로그인 요청했습니다`);

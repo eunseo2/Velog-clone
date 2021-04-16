@@ -97,11 +97,11 @@ export class AuthService {
         <p>이 메일을 요청한 적이 없으시다면 무시하시기 바랍니다.</p>
       `,
       });
-      const result = {
+      const CodeEmail = {
         code,
         email,
       };
-      return result;
+      return CodeEmail;
     } catch (err) {
       console.log(err);
     }
