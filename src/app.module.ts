@@ -5,9 +5,12 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Google } from './entities/Google.entity';
+import { AppService } from './app.service';
+import { UserRepository } from './entities/user.repository';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([UserRepository]),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env.development',
@@ -26,5 +29,6 @@ import { Google } from './entities/Google.entity';
     AuthModule,
   ],
   controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

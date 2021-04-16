@@ -21,6 +21,6 @@ async function bootstrap() {
   );
   app.use(cookieParser());
 
-  await app.listen(PORT, () => console.log(`${PORT}포트 서버 대기 중 `));
+  await app.listen(PORT, () => console.log(`${PORT}포트 서버 돌아가는 중  `));
 }
 bootstrap();

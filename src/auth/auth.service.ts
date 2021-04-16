@@ -14,7 +14,6 @@ const generateRandom = function (min: number, max: number) {
 };
 
 const { SECRET_KEY, CLIENT_HOST, API_HOST } = config;
-console.log(SECRET_KEY);
 
 if (!SECRET_KEY || !CLIENT_HOST || !API_HOST) {
   throw new Error('MISSING_ENVAR');
@@ -99,8 +98,8 @@ export class AuthService {
       `,
       });
       const result = {
-        code: code,
-        email: email,
+        code,
+        email,
       };
       return result;
     } catch (err) {
@@ -124,13 +123,11 @@ export class AuthService {
         <p> 밑에 링크 누르면 velog 바로 시작할 수 있습니다.  </p>
         <br />
         <hr />
-        <p><a href="http://localhost:3000/velog.io">시작하기</a></p>
+        <p><a href="http://localhost:3000/velog.io?email=${email}">시작하기</a></p>
       
       `,
       });
-      return {
-        statuscode: 200,
-      }; // 회원가입 필요함 .
+      return { statusCode: 200 };
     } catch (err) {
       console.log(err);
     }
