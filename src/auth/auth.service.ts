@@ -46,7 +46,7 @@ export class AuthService {
       if (existsUser) {
         console.log('이미 등록된 회원입니다.');
         return {
-          url: 'http://localhost:3000/velog.io',
+          url: 'http://localhost:3000/',
           statuscode: 200,
         }; // 회원가입 필요함 .
       } else {
@@ -55,8 +55,8 @@ export class AuthService {
           await this.googleRepository.save(req.user);
         }
         return {
+          url: `http://localhost:3000/auth/register-form?email=${email}`,
           statuscode: 200,
-          email: email,
         }; // 회원가입 필요함 .
       }
     }

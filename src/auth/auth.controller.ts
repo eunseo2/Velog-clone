@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
@@ -28,6 +29,7 @@ export class AuthController {
 
   @HttpCode(200)
   @Get('redirect')
+  @Redirect()
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req) {
     return this.authService.googleLogin(req);
@@ -120,5 +122,9 @@ export class AuthController {
     } finally {
       queryRunner.release();
     }
+  }
+  @Get('register-form')
+  async main(@Query() query: LoginUserDto) {
+    return query.email;
   }
 }

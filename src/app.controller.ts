@@ -66,4 +66,8 @@ export class AppController {
   resent() {
     return 'welcome recent velog ';
   }
+  @Get('/')
+  velogMain() {
+    return 'hello ';
+  }
 }
