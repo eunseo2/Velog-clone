@@ -7,10 +7,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import config from '../config';
+import { GoogleRepository } from 'src/entities/google.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([UserRepository, GoogleRepository]),
     MailerModule.forRoot({
       transport: {
         service: 'Naver',

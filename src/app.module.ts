@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { Google } from './entities/Google.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { User } from './entities/user.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PW,
       database: process.env.DB_DATABASE,
-      entities: [User],
+      entities: [User, Google],
       synchronize: true,
     }),
     AuthModule,

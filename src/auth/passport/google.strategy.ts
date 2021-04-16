@@ -12,9 +12,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientSecret: config.clientSecret,
       callbackURL: 'http://localhost:3000/auth/redirect',
       scope: ['email', 'profile'],
-      accessType: 'offline',
-      prompt: 'consent',
-      session: false,
     });
   }
 

@@ -9,10 +9,6 @@ export class User {
   @Column({ nullable: false })
   email: string;
   @Column({ nullable: true })
-  providerName: string;
-  @Column({ nullable: true })
-  providerID?: string;
-  @Column({ nullable: true })
   profile?: string;
   @Column()
   username?: string;

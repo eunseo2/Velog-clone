@@ -4,7 +4,10 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { RegisterDto } from './dto/register-user.dto';
 import * as jwt from 'jsonwebtoken';
 import config from '../config';
-import { User } from 'src/entities/user.entity';
+//import { User } from 'src/entities/user.entity';
+import { Google } from '../entities/Google.entity';
+import { GoogleRepository } from 'src/entities/google.repository';
+
 const generateRandom = function (min: number, max: number) {
   const ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
   return ranNum;
@@ -24,22 +27,38 @@ export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly mailerService: MailerService,
+    private readonly googleRepository: GoogleRepository,
   ) {
+    this.googleRepository = googleRepository;
     this.userRepository = userRepository;
   }
-  async googleLogin(req: CustomRequest<{ user: User }>) {
+  async googleLogin(req: CustomRequest<{ user: Google }>) {
     if (!req.user) {
       return 'No user from google';
     } else {
       let existsUser = null;
-      const name = req.user.providerName;
+      let googleUser = null;
+      const email = req.user.email;
 
-      existsUser = await this.userRepository.findOne({ providerName: name });
+      existsUser = await this.userRepository.findOne({ email: email });
+
       console.log(existsUser);
+      // 이미 등록된 회원
       if (existsUser) {
-        console.log('이미 저장했습니다');
+        console.log('이미 등록된 회원입니다.');
+        return {
+          url: 'http://localhost:3000/velog.io',
+          statuscode: 200,
+        }; // 회원가입 필요함 .
       } else {
-        return await this.userRepository.save(req.user);
+        googleUser = await this.googleRepository.findOne({ email: email });
+        if (!googleUser) {
+          await this.googleRepository.save(req.user);
+        }
+        return {
+          statuscode: 200,
+          email: email,
+        }; // 회원가입 필요함 .
       }
     }
   }
@@ -111,12 +130,14 @@ export class AuthService {
   }
 
   async saveUser(
+    provider: string,
     email: string,
     username: string,
     userID: string,
     intro: string,
   ) {
     const Newuser: RegisterDto = {
+      provider: provider,
       email: email,
       username: username,
       userID: userID,
@@ -134,7 +155,6 @@ export class AuthService {
     };
 
     // payload : 토큰에 넣을 데이터, 비밀키, 옵션, 콜백함수
-    console.log('ss', jwt.sign(payload, SECRET_KEY, jwtOptions));
 
     return new Promise((resolve, reject) => {
       jwt.sign(payload, SECRET_KEY, jwtOptions, (err, token) => {
