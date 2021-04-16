@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "strict": false, //true로 바꾸면 type안쓴거 다 잡아냄
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
