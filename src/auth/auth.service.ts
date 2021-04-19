@@ -86,7 +86,7 @@ export class AuthService {
         subject: '회원가입 요청 메일입니다.', // Subject line
         html: `
         <h1>
-         velog 인증코드 메일
+         velog 회원가입 요청 메일 
         </h1>
         <hr />
         <br />
