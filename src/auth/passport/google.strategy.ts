@@ -4,13 +4,15 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 import { Injectable } from '@nestjs/common';
 import config from '../../config';
 
+const API_HOST = config.API_HOST;
+
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor() {
     super({
       clientID: config.clientID,
       clientSecret: config.clientSecret,
-      callbackURL: 'http://localhost:3000/auth/redirect',
+      callbackURL: `${API_HOST}/auth/redirect`,
       scope: ['email', 'profile'],
     });
   }
