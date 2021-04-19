@@ -62,7 +62,7 @@ export class AppController {
     return 'welcome velog ';
   }
 
-  @Get('velog.io/recent')
+  @Get('/recent')
   resent() {
     return 'welcome recent velog ';
   }
