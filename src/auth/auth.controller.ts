@@ -40,9 +40,9 @@ export class AuthController {
     const user = await this.authService.findUserEmail(userData.email);
 
     if (!user) {
-      const CodeEmail = await this.authService.sendcodeMail(userData.email);
+      const CodeEmail = await this.authService.sendRegisterMail(userData.email);
       console.log(
-        `email ID ${userData.email} not found 인증코드 발송했습니다.`,
+        `email ID ${userData.email} not found 회원가입 메일 요청했습니다`,
       );
       return CodeEmail;
     } else {

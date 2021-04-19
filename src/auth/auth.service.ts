@@ -8,10 +8,11 @@ import config from '../config';
 import { Google } from '../entities/Google.entity';
 import { GoogleRepository } from 'src/entities/google.repository';
 
-const generateRandom = function (min: number, max: number) {
-  const ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
-  return ranNum;
-};
+// 인증코드 6자리 만들때 필요
+// const generateRandom = function (min: number, max: number) {
+//   const ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
+//   return ranNum;
+// };
 
 const { SECRET_KEY, CLIENT_HOST, API_HOST } = config;
 
@@ -77,13 +78,12 @@ export class AuthService {
     return user;
   }
 
-  async sendcodeMail(email: string) {
+  async sendRegisterMail(email: string) {
     try {
-      const code: number = generateRandom(111111, 999999);
       await this.mailerService.sendMail({
         to: email, // list of receivers
         from: 'dmstj7371@naver.com', // sender address
-        subject: '이메일 인증 요청 메일입니다.', // Subject line
+        subject: '회원가입 요청 메일입니다.', // Subject line
         html: `
         <h1>
          velog 인증코드 메일
@@ -91,18 +91,13 @@ export class AuthService {
         <hr />
         <br />
         <p>안녕하세요 ${email}님 <p/>
-        <p>인증코드를 회원가입화면에 입력해주세요 : ${code} </p>
         <br />
         <hr />
-        <p><a href="http://localhost:3000/register-form">회원가입 하러 가기 </a></p>
+        <p><a href="http://localhost:3000/auth/register-form?email=${email}">회원가입 하러 가기 </a></p>
         <p>이 메일을 요청한 적이 없으시다면 무시하시기 바랍니다.</p>
       `,
       });
-      const CodeEmail = {
-        code,
-        email,
-      };
-      return CodeEmail;
+      return email;
     } catch (err) {
       console.log(err);
     }
