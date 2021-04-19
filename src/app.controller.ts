@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Query } from '@nestjs/common';
+import { Controller, Get, Res, Query, Redirect } from '@nestjs/common';
 
 import { Response } from 'express';
 import { AppService } from './app.service';
@@ -8,6 +8,7 @@ import { LoginUserDto } from './auth/dto/login-user.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
   @Get('/')
+  @Redirect()
   async main(
     @Res({ passthrough: true }) res: Response,
     @Query() query: LoginUserDto,
@@ -55,11 +56,9 @@ export class AppController {
 
       setTokenCookie(accessToken, refreshToken);
       //console.log(accessToken);
-      return { statusCode: 200 };
+      return { url: `http://localhost:3000/`, statuscode: 200 };
     }
     //console.log(code);
-
-    return 'welcome velog ';
   }
 
   @Get('/recent')
