@@ -42,14 +42,15 @@ export class AuthService {
       existsUser = await this.userRepository.findOne({ email: email });
 
       console.log(existsUser);
-      // 이미 등록된 회원
+      // 이미 등록된 회원이니까 바로 로그인
       if (existsUser) {
         console.log('이미 등록된 회원입니다.');
         return {
-          url: 'http://localhost:3000/',
+          url: `http://localhost:3000/velog.io?email=${email}`,
           statuscode: 200,
-        }; // 회원가입 필요함 .
+        };
       } else {
+        // 회원가입 필요함 .
         googleUser = await this.googleRepository.findOne({ email: email });
         if (!googleUser) {
           await this.googleRepository.save(req.user);
@@ -57,7 +58,7 @@ export class AuthService {
         return {
           url: `http://localhost:3000/auth/register-form?email=${email}`,
           statuscode: 200,
-        }; // 회원가입 필요함 .
+        };
       }
     }
   }
