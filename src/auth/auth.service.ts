@@ -58,8 +58,6 @@ export class AuthService {
         }
         return {
           url: `http://localhost:3000/auth/register-form?email=${email}`,
-          statuscode: 200,
-          email,
         };
       }
     }
