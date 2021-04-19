@@ -7,7 +7,7 @@ import { LoginUserDto } from './auth/dto/login-user.dto';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-  @Get('velog.io')
+  @Get('/')
   async main(
     @Res({ passthrough: true }) res: Response,
     @Query() query: LoginUserDto,
@@ -65,9 +65,5 @@ export class AppController {
   @Get('velog.io/recent')
   resent() {
     return 'welcome recent velog ';
-  }
-  @Get('/')
-  velogMain() {
-    return 'hello ';
   }
 }
