@@ -38,8 +38,10 @@ import { Token } from 'src/lib/token';
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, Token],
 })
-export class AuthModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(NeedsAuthMiddleware).forRoutes('/auth/logout');
-  }
-}
+export class AuthModule {}
+
+// export class AuthModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(NeedsAuthMiddleware).forRoutes('/auth/logout');
+//   }
+// }
