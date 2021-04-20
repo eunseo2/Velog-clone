@@ -22,28 +22,28 @@ export class AppController {
     user = await this.appService.findUserEmail(query.email);
     // console.log(user);
     if (user) {
-      // const refreshToken = await this.token.generateToken(
-      //   {
-      //     user: user,
-      //   },
-      //   {
-      //     subject: 'refresh_token',
-      //     expiresIn: '30d',
-      //   },
-      // );
+      const refreshToken = await this.token.generateToken(
+        {
+          user: user,
+        },
+        {
+          subject: 'refresh_token',
+          expiresIn: '30d',
+        },
+      );
 
-      // const accessToken = await this.token.generateToken(
-      //   {
-      //     user: user,
-      //   },
-      //   {
-      //     subject: 'access_token',
-      //     expiresIn: '1h',
-      //   },
-      // );
+      const accessToken = await this.token.generateToken(
+        {
+          user: user,
+        },
+        {
+          subject: 'access_token',
+          expiresIn: '1h',
+        },
+      );
 
-      // this.token.setTokenCookie(accessToken, refreshToken, res);
-      //console.log(accessToken);
+      this.token.setTokenCookie(accessToken, refreshToken, res);
+      console.log(accessToken);
       return { url: `http://localhost:3000/`, statuscode: 200 };
     }
     //console.log(code);
