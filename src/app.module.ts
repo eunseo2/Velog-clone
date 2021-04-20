@@ -8,6 +8,7 @@ import { Google } from './entities/Google.entity';
 import { AppService } from './app.service';
 import { UserRepository } from './entities/user.repository';
 import { Token } from './lib/token';
+import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
 //import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
 
 @Module({
@@ -33,7 +34,8 @@ import { Token } from './lib/token';
   controllers: [AppController],
   providers: [AppService, Token],
 })
-export class AppModule {}
-// configure(consumer: MiddlewareConsumer) {
-//   consumer.apply(ConsumeTokenMiddleware).forRoutes();
-// }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ConsumeTokenMiddleware).forRoutes(AppController);
+  }
+}

@@ -43,7 +43,6 @@ export class AppController {
       );
 
       this.token.setTokenCookie(accessToken, refreshToken, res);
-      console.log(accessToken);
       return { url: `http://localhost:3000/`, statuscode: 200 };
     }
     //console.log(code);

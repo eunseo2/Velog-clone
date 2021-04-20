@@ -9,9 +9,15 @@ if (!SECRET_KEY || !CLIENT_HOST || !API_HOST) {
   throw new Error('MISSING_ENVAR');
 }
 
+type Decode<T> = {
+  iat: number;
+  exp: number;
+  iss: string;
+} & T;
+
 @Injectable()
 export class Token {
-  generateToken = (payload, options): Promise<string> => {
+  generateToken = (payload, options: jwt.SignOptions): Promise<string> => {
     console.log('payload', payload, options);
     const jwtOptions = {
       issuer: API_HOST,
@@ -27,11 +33,12 @@ export class Token {
     });
   };
 
-  decodeToken = (token) => {
+  decodeToken = <T>(token: string): Promise<Decode<T>> => {
     return new Promise((resolve, reject) => {
-      jwt.verify(token, SECRET_KEY, (err, decode) => {
+      jwt.verify(token, SECRET_KEY, (err, decode: Decode<T>) => {
         //검증
         if (err) reject(err);
+        console.log('decode', decode);
         resolve(decode);
       });
     });
@@ -57,4 +64,33 @@ export class Token {
       secure: false,
     });
   };
+
+  async refreshUserToken(refreshTokenExp, originalRefreshToken) {
+    const now = new Date().getTime();
+    const diff = refreshTokenExp * 1000 - now;
+    let refreshToken = originalRefreshToken;
+
+    //15일 이하인 경우
+    if (diff < 1000 * 60 * 60 * 24 * 15) {
+      refreshToken = await this.generateToken(
+        {
+          user: this,
+        },
+        {
+          subject: 'refresh_token',
+          expiresIn: '30d',
+        },
+      );
+    }
+    const accessToken = await this.generateToken(
+      {
+        user: this,
+      },
+      {
+        subject: 'access_toekn',
+        expiresIn: '1h',
+      },
+    );
+    return { refreshToken, accessToken };
+  }
 }
