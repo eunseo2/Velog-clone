@@ -96,7 +96,7 @@ export class AuthService {
         <p>이 메일을 요청한 적이 없으시다면 무시하시기 바랍니다.</p>
       `,
       });
-      return email;
+      return { statusCode: 201, message: '회원가입' };
     } catch (err) {
       console.log(err);
     }
@@ -122,7 +122,7 @@ export class AuthService {
       
       `,
       });
-      return { statusCode: 200 };
+      return { statusCode: 201, message: '로그인' };
     } catch (err) {
       console.log(err);
     }
