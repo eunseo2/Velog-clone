@@ -35,7 +35,7 @@ export class AuthController {
     return this.authService.googleLogin(req);
   }
 
-  @Get('mail')
+  @Post('mail')
   async mail(@Body() userData: LoginUserDto) {
     const user = await this.authService.findUserEmail(userData.email);
 
@@ -123,8 +123,11 @@ export class AuthController {
       queryRunner.release();
     }
   }
-  @Get('register-form')
-  async main(@Query() query: LoginUserDto) {
-    return query.email;
+
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+    res.sendStatus(200);
   }
 }
