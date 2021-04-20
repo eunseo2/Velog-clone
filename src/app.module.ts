@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
@@ -7,6 +7,8 @@ import { User } from './entities/user.entity';
 import { Google } from './entities/Google.entity';
 import { AppService } from './app.service';
 import { UserRepository } from './entities/user.repository';
+import { Token } from './lib/token';
+//import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
 
 @Module({
   imports: [
@@ -29,6 +31,9 @@ import { UserRepository } from './entities/user.repository';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Token],
 })
 export class AppModule {}
+// configure(consumer: MiddlewareConsumer) {
+//   consumer.apply(ConsumeTokenMiddleware).forRoutes();
+// }

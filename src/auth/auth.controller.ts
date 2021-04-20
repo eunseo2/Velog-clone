@@ -10,7 +10,6 @@ import {
   UseGuards,
   HttpCode,
   Post,
-  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
@@ -18,10 +17,15 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterDto } from './dto/register-user.dto';
 import { getConnection } from 'typeorm';
+import { Token } from '../lib/token';
+import config from 'src/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly token: Token,
+  ) {}
 
   @Get()
   @UseGuards(AuthGuard('google'))
@@ -78,7 +82,7 @@ export class AuthController {
         userData.userID,
         userData.Intro,
       );
-      const refreshToken = await this.authService.generateToken(
+      const refreshToken = await this.token.generateToken(
         {
           user: user,
         },
@@ -88,7 +92,7 @@ export class AuthController {
         },
       );
 
-      const accessToken = await this.authService.generateToken(
+      const accessToken = await this.token.generateToken(
         {
           user: user,
         },
@@ -98,24 +102,7 @@ export class AuthController {
         },
       );
 
-      const setTokenCookie = (accessToken: string, refreshToken: string) => {
-        // respponse 브라우져 (clinet)에 쿠키 생성
-        res.cookie('access_token', accessToken, {
-          httpOnly: true, // 웹 서버를 통해서만 cookie 접근할 수 있음
-          domain: undefined,
-          maxAge: 1000 * 60 * 60 * 1, //1hour 만료시간
-          secure: false,
-        });
-
-        res.cookie('refresh_token', refreshToken, {
-          httpOnly: true,
-          domain: undefined,
-          maxAge: 1000 * 60 * 60 * 24 * 30, //30day
-          secure: false,
-        });
-      };
-
-      setTokenCookie(accessToken, refreshToken);
+      this.token.setTokenCookie(accessToken, refreshToken, res);
       return { statusCode: 200 };
     } catch (err) {
       queryRunner.rollbackTransaction();

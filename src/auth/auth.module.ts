@@ -4,10 +4,12 @@ import { GoogleStrategy } from './passport/google.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from 'src/entities/user.repository';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import config from '../config';
 import { GoogleRepository } from 'src/entities/google.repository';
+import { NeedsAuthMiddleware } from 'src/middleware/needs-auth.middleware';
+import { Token } from 'src/lib/token';
 
 @Module({
   imports: [
@@ -34,6 +36,10 @@ import { GoogleRepository } from 'src/entities/google.repository';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy],
+  providers: [AuthService, GoogleStrategy, Token],
 })
-export class AuthModule {}
+export class AuthModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(NeedsAuthMiddleware).forRoutes('/auth/logout');
+  }
+}

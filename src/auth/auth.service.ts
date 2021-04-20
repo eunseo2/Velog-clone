@@ -144,32 +144,4 @@ export class AuthService {
     };
     return this.userRepository.save(Newuser);
   }
-
-  generateToken = (payload, options): Promise<string> => {
-    console.log('payload', payload, options);
-    const jwtOptions = {
-      issuer: API_HOST,
-      expiresIn: '30d',
-      ...options,
-    };
-
-    // payload : 토큰에 넣을 데이터, 비밀키, 옵션, 콜백함수
-
-    return new Promise((resolve, reject) => {
-      jwt.sign(payload, SECRET_KEY, jwtOptions, (err, token) => {
-        if (err) reject(err);
-        resolve(token);
-      });
-    });
-  };
-
-  decodeToken = (token) => {
-    return new Promise((resolve, reject) => {
-      jwt.verify(token, SECRET_KEY, (err, decode) => {
-        //검증
-        if (err) reject(err);
-        resolve(decode);
-      });
-    });
-  };
 }
