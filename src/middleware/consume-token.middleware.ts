@@ -22,11 +22,12 @@ export class ConsumeTokenMiddleware implements NestMiddleware {
         if (!user) {
           throw new Error('Invalid user error');
         }
+
+        //refresh를 통해서 accessToken을 생성
         const tokens = await this.token.refreshUserToken(
           decoded.exp,
           refreshToken,
         );
-        console.log('accessToken을 만들어라~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
         this.token.setTokenCookie(tokens.accessToken, tokens.accessToken, res);
         return user;
@@ -35,7 +36,6 @@ export class ConsumeTokenMiddleware implements NestMiddleware {
       }
     };
 
-    console.log('ss');
     const {
       access_token: accessToken,
       refresh_token: refreshToken,
