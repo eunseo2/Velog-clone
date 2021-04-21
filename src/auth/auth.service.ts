@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/entities/user.repository';
 import { MailerService } from '@nestjs-modules/mailer';
 import { RegisterDto } from './dto/register-user.dto';
-import * as jwt from 'jsonwebtoken';
+
 import config from '../config';
 //import { User } from 'src/entities/user.entity';
 import { Google } from '../entities/Google.entity';
@@ -47,7 +47,7 @@ export class AuthService {
       if (existsUser) {
         console.log('이미 등록된 회원입니다.');
         return {
-          url: `http://localhost:4000/?email=${email}`,
+          url: `http://localhost:4000/auth/login?email=${email}`,
           statuscode: 200,
         };
       } else {
@@ -118,7 +118,7 @@ export class AuthService {
         <p> 밑에 링크 누르면 velog 바로 시작할 수 있습니다.  </p>
         <br />
         <hr />
-        <p><a href="http://localhost:4000/?email=${email}">시작하기</a></p>
+        <p><a href="http://localhost:4000/auth/login?email=${email}">시작하기</a></p>
       
       `,
       });

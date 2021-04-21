@@ -65,7 +65,10 @@ export class Token {
     });
   };
 
-  async refreshUserToken(refreshTokenExp, originalRefreshToken) {
+  async refreshUserToken(
+    refreshTokenExp: number,
+    originalRefreshToken: string,
+  ) {
     const now = new Date().getTime();
     const diff = refreshTokenExp * 1000 - now;
     let refreshToken = originalRefreshToken;

@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
@@ -18,7 +19,6 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterDto } from './dto/register-user.dto';
 import { getConnection } from 'typeorm';
 import { Token } from '../lib/token';
-import config from 'src/config';
 
 @Controller('auth')
 export class AuthController {
@@ -115,5 +115,41 @@ export class AuthController {
   async logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
+  }
+
+  @Get('login')
+  @Redirect()
+  async main(
+    @Res({ passthrough: true }) res: Response,
+    @Query() query: LoginUserDto,
+  ) {
+    let user = null;
+
+    user = await this.authService.findUserEmail(query.email);
+
+    if (user) {
+      const refreshToken = await this.token.generateToken(
+        {
+          user: user,
+        },
+        {
+          subject: 'refresh_token',
+          expiresIn: '30d',
+        },
+      );
+
+      const accessToken = await this.token.generateToken(
+        {
+          user: user,
+        },
+        {
+          subject: 'access_token',
+          expiresIn: '1h',
+        },
+      );
+
+      this.token.setTokenCookie(accessToken, refreshToken, res);
+      return { url: `http://localhost:3000/`, statuscode: 200 };
+    }
   }
 }

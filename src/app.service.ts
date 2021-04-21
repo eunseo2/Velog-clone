@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/entities/user.repository';
 
-import * as jwt from 'jsonwebtoken';
 import config from './config';
 
 const { SECRET_KEY, CLIENT_HOST, API_HOST } = config;

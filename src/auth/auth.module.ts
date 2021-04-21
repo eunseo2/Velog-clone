@@ -10,6 +10,7 @@ import config from '../config';
 import { GoogleRepository } from 'src/entities/google.repository';
 import { NeedsAuthMiddleware } from 'src/middleware/needs-auth.middleware';
 import { Token } from 'src/lib/token';
+import { ConsumeTokenMiddleware } from 'src/middleware/consume-token.middleware';
 
 @Module({
   imports: [
@@ -38,10 +39,9 @@ import { Token } from 'src/lib/token';
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, Token],
 })
-export class AuthModule {}
-
-// export class AuthModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer.apply(NeedsAuthMiddleware).forRoutes('/auth/logout');
-//   }
-// }
+export class AuthModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ConsumeTokenMiddleware).forRoutes(AuthController);
+    consumer.apply(NeedsAuthMiddleware).forRoutes('/auth/logout');
+  }
+}
