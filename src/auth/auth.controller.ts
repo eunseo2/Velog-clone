@@ -62,7 +62,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const existsUser = await this.authService.findUserName(userData.username);
-    console.log(existsUser);
+    const existsEmail = await this.authService.findUserEmail(userData.email);
 
     if (existsUser) {
       throw new ForbiddenException({
@@ -71,6 +71,14 @@ export class AuthController {
         error: 'Forbidden',
       });
     }
+    if (existsEmail) {
+      throw new ForbiddenException({
+        statusCode: HttpStatus.FORBIDDEN,
+        message: [`이미 가입하셨습니다.`],
+        error: 'Forbidden',
+      });
+    }
+
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
     queryRunner.startTransaction();
