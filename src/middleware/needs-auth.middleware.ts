@@ -8,6 +8,7 @@ export class NeedsAuthMiddleware implements NestMiddleware {
       return;
     }
 
+    console.log('ssssssssssssssss', req.user);
     next();
   }
 }

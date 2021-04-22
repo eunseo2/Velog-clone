@@ -19,6 +19,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterDto } from './dto/register-user.dto';
 import { getConnection } from 'typeorm';
 import { Token } from '../lib/token';
+import { User } from 'src/entities/user.entity';
+type CustomRequest<T> = Request & T;
 
 @Controller('auth')
 export class AuthController {
@@ -31,7 +33,6 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
 
-  @HttpCode(200)
   @Get('redirect')
   @Redirect()
   @UseGuards(AuthGuard('google'))
@@ -126,6 +127,11 @@ export class AuthController {
   }
 
   @Get('login')
+  async login(@Req() req) {
+    return req.user;
+  }
+
+  @Get('login-page')
   @Redirect()
   async main(
     @Res({ passthrough: true }) res: Response,
@@ -155,9 +161,8 @@ export class AuthController {
           expiresIn: '1h',
         },
       );
-
       this.token.setTokenCookie(accessToken, refreshToken, res);
-      return { user, url: `http://localhost:3000/`, statuscode: 200 };
+      return { url: `http://localhost:3000/`, statuscode: 200 };
     }
   }
 }
