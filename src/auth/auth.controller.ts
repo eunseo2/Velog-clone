@@ -8,7 +8,6 @@ import {
   Req,
   Res,
   UseGuards,
-  HttpCode,
   Post,
   Query,
 } from '@nestjs/common';
@@ -19,8 +18,6 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterDto } from './dto/register-user.dto';
 import { getConnection } from 'typeorm';
 import { Token } from '../lib/token';
-import { User } from 'src/entities/user.entity';
-type CustomRequest<T> = Request & T;
 
 @Controller('auth')
 export class AuthController {
@@ -127,7 +124,7 @@ export class AuthController {
   }
 
   @Get('login')
-  async login(@Req() req) {
+  async login(@Req() req: any) {
     return req.user;
   }
 

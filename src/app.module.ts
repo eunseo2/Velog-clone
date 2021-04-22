@@ -9,7 +9,7 @@ import { AppService } from './app.service';
 import { UserRepository } from './entities/user.repository';
 import { Token } from './lib/token';
 import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
-//import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -30,6 +30,7 @@ import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
       synchronize: true,
     }),
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, Token],
