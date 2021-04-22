@@ -157,7 +157,7 @@ export class AuthController {
       );
 
       this.token.setTokenCookie(accessToken, refreshToken, res);
-      return { url: `http://localhost:3000/`, statuscode: 200 };
+      return { user, url: `http://localhost:3000/`, statuscode: 200 };
     }
   }
 }
