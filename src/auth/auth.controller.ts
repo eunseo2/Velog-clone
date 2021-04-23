@@ -59,7 +59,7 @@ export class AuthController {
     @Body() userData: RegisterDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const existsUser = await this.authService.findUserName(userData.username);
+    const existsUser = await this.authService.findUserID(userData.userID);
     const existsEmail = await this.authService.findUserEmail(userData.email);
 
     if (existsUser) {

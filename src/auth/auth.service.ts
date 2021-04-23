@@ -70,9 +70,9 @@ export class AuthService {
     return user;
   }
 
-  async findUserName(username: string) {
+  async findUserID(UserID: string) {
     const user = await this.userRepository.findOne({
-      where: { username: username },
+      where: { userID: UserID },
     });
     return user;
   }
