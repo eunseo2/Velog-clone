@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
 } from '@nestjs/common';
+
 import { UpdateDto } from 'src/auth/dto/update-user.dto';
+
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -22,8 +24,8 @@ export class UserController {
   }
 
   @Patch(':id')
-  async userUpdate(@Param('id') userId: number, @Body() updateData: UpdateDto) {
-    await this.userService.Update(userId, updateData);
+  async patch(@Param('id') Id: number, @Body() updateData: UpdateDto) {
+    await this.userService.Update(Id, updateData);
     return { statusCode: 200 };
   }
 }
