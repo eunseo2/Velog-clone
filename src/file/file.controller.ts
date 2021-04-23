@@ -11,6 +11,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName } from 'src/lib/editFileName';
 import { imageFileFilter } from 'src/lib/imageFileFilter';
+import config from '../config';
 
 @Controller('file')
 export class FileController {
@@ -38,7 +39,8 @@ export class FileController {
   }
 
   @Get(':imgpath')
-  seeUploadedFile(@Param('imgpath') image, @Res() res) {
-    return res.sendFile(image, { root: './files' });
+  seeUploadedFile(@Param('imgpath') image) {
+    const API_HOST = config.API_HOST;
+    return `${API_HOST}/files/${image}`;
   }
 }

@@ -18,6 +18,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterDto } from './dto/register-user.dto';
 import { getConnection } from 'typeorm';
 import { Token } from '../lib/token';
+import config from '../config';
 
 @Controller('auth')
 export class AuthController {
@@ -33,8 +34,8 @@ export class AuthController {
   @Get('redirect')
   @Redirect()
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req);
+  async googleAuthRedirect(@Req() req) {
+    return await this.authService.googleLogin(req);
   }
 
   @Post('mail')
@@ -59,7 +60,7 @@ export class AuthController {
     @Body() userData: RegisterDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const existsUser = await this.authService.findUserID(userData.userID);
+    const existsUser = await this.authService.findUserID(userData.displayName);
     const existsEmail = await this.authService.findUserEmail(userData.email);
 
     if (existsUser) {
@@ -69,6 +70,7 @@ export class AuthController {
         error: 'Forbidden',
       });
     }
+
     if (existsEmail) {
       throw new ForbiddenException({
         statusCode: HttpStatus.FORBIDDEN,
@@ -85,8 +87,8 @@ export class AuthController {
         userData.provider,
         userData.email,
         userData.username,
-        userData.userID,
-        userData.Intro,
+        userData.displayName,
+        userData.intro,
       );
       const refreshToken = await this.token.generateToken(
         {
@@ -133,7 +135,7 @@ export class AuthController {
   async main(
     @Res({ passthrough: true }) res: Response,
     @Query() query: LoginUserDto,
-  ) {
+  ): Promise<{ url: string }> {
     let user = null;
 
     user = await this.authService.findUserEmail(query.email);
@@ -158,8 +160,12 @@ export class AuthController {
           expiresIn: '1h',
         },
       );
+
+      const CLIENT_HOST = config.CLIENT_HOST;
       this.token.setTokenCookie(accessToken, refreshToken, res);
-      return { url: `http://localhost:3000/`, statuscode: 200 };
+      const url = new URL(CLIENT_HOST);
+
+      return { url: url.toString() };
     }
   }
 }

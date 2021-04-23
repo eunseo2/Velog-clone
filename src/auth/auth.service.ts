@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/entities/user.repository';
 import { MailerService } from '@nestjs-modules/mailer';
-import { RegisterDto } from './dto/register-user.dto';
+import { Provider } from './dto/register-user.dto';
 
 import config from '../config';
-//import { User } from 'src/entities/user.entity';
 import { Google } from '../entities/Google.entity';
 import { GoogleRepository } from 'src/entities/google.repository';
 
@@ -32,13 +31,17 @@ export class AuthService {
     this.googleRepository = googleRepository;
     this.userRepository = userRepository;
   }
-  async googleLogin(req: CustomRequest<{ user: Google }>) {
+  async googleLogin(
+    req: CustomRequest<{ user: Google }>,
+  ): Promise<{ url: string; statusCode?: number }> {
     if (!req.user) {
-      return 'No user from google';
+      throw new Error('Not found user info');
     } else {
       let existsUser = null;
       let googleUser = null;
-      const email = req.user.email;
+      const { email } = req.user;
+      const API_HOST = config.API_HOST;
+      const CLIENT_HOST = config.CLIENT_HOST;
 
       existsUser = await this.userRepository.findOne({ email: email });
 
@@ -47,8 +50,7 @@ export class AuthService {
       if (existsUser) {
         console.log('이미 등록된 회원입니다.');
         return {
-          url: `http://localhost:4000/auth/login-page?email=${email}`,
-          statuscode: 200,
+          url: `${API_HOST}/auth/login-page?email=${email}`,
         };
       } else {
         // 회원가입 필요함 .
@@ -57,7 +59,7 @@ export class AuthService {
           await this.googleRepository.save(req.user);
         }
         return {
-          url: `http://localhost:3000/auth/register-form?email=${email}`,
+          url: `${CLIENT_HOST}/auth/register-form?email=${email}`,
         };
       }
     }
@@ -70,9 +72,9 @@ export class AuthService {
     return user;
   }
 
-  async findUserID(UserID: string) {
+  async findUserID(displayName: string) {
     const user = await this.userRepository.findOne({
-      where: { userID: UserID },
+      where: { display_name: displayName },
     });
     return user;
   }
@@ -92,7 +94,7 @@ export class AuthService {
         <p>안녕하세요 ${email}님 <p/>
         <br />
         <hr />
-        <p><a href="http://localhost:3000/auth/register-form?email=${email}">회원가입 하러 가기 </a></p>
+        <p><a href="${CLIENT_HOST}/auth/register-form?email=${email}">회원가입 하러 가기 </a></p>
         <p>이 메일을 요청한 적이 없으시다면 무시하시기 바랍니다.</p>
       `,
       });
@@ -118,7 +120,7 @@ export class AuthService {
         <p> 밑에 링크 누르면 velog 바로 시작할 수 있습니다.  </p>
         <br />
         <hr />
-        <p><a href="http://localhost:4000/auth/login-page?email=${email}">시작하기</a></p>
+        <p><a href="${API_HOST}/auth/login-page?email=${email}">시작하기</a></p>
       
       `,
       });
@@ -129,18 +131,18 @@ export class AuthService {
   }
 
   async saveUser(
-    provider: string,
+    provider: Provider,
     email: string,
     username: string,
-    userID: string,
+    displayName: string,
     intro: string,
   ) {
-    const Newuser: RegisterDto = {
+    const Newuser = {
       provider: provider,
       email: email,
       username: username,
-      userID: userID,
-      Intro: intro,
+      display_name: displayName,
+      intro: intro,
     };
     return this.userRepository.save(Newuser);
   }

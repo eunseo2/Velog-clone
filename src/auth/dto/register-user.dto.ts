@@ -1,14 +1,19 @@
-import { IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
+
+export enum Provider {
+  google = 'google',
+  velog = 'velog',
+}
 
 export class RegisterDto {
-  @IsString()
-  provider: string;
+  @IsEnum(Provider, { each: true })
+  provider: Provider;
   @IsString()
   email: string;
   @IsString()
   username: string;
   @IsString()
-  userID: string;
+  displayName: string;
   @IsString()
-  Intro: string;
+  intro: string;
 }

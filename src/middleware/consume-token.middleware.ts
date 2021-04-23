@@ -18,11 +18,9 @@ export class ConsumeTokenMiddleware implements NestMiddleware {
           refreshToken,
         );
         const user = await this.userRepository.findOne(decoded.user.id);
-
         if (!user) {
           throw new Error('Invalid user error');
         }
-
         //refresh를 통해서 accessToken을 생성
         const tokens = await this.token.refreshUserToken(
           decoded.exp,
@@ -51,7 +49,7 @@ export class ConsumeTokenMiddleware implements NestMiddleware {
       );
       const { id: userId } = accessTokenData.user;
       const user = await this.userRepository.findOne(userId);
-      console.log('decode~~~~:', accessTokenData);
+      //console.log('decode~~~~:', accessTokenData);
       req.user = user;
       const diff: number = accessTokenData.exp * 1000 - new Date().getTime();
       if (diff < 1000 * 60 * 30 && refreshToken) {
@@ -69,7 +67,6 @@ export class ConsumeTokenMiddleware implements NestMiddleware {
       } catch (e) {
         throw new Error(e);
       }
-      console.log(err);
       return next();
     }
     next();

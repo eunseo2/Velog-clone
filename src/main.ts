@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-
+import config from './config';
 const PORT = Number(process.env.PORT);
 
 if (!PORT) {
@@ -11,9 +11,10 @@ if (!PORT) {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const CLIENT_HOST = config.CLIENT_HOST;
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: `${CLIENT_HOST}`,
     credentials: true,
   });
 

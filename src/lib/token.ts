@@ -37,7 +37,10 @@ export class Token {
     return new Promise((resolve, reject) => {
       jwt.verify(token, SECRET_KEY, (err, decode: Decode<T>) => {
         //검증
-        if (err) reject(err);
+        if (err) {
+          reject(err);
+          return;
+        }
         console.log('decode', decode);
         resolve(decode);
       });
@@ -90,7 +93,7 @@ export class Token {
         user: this,
       },
       {
-        subject: 'access_toekn',
+        subject: 'access_token',
         expiresIn: '1h',
       },
     );
