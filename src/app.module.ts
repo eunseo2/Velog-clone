@@ -10,6 +10,9 @@ import { UserRepository } from './entities/user.repository';
 import { Token } from './lib/token';
 import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
 import { UserModule } from './user/user.module';
+import { FileController } from './file/file.controller';
+import { FileService } from './file/file.service';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -31,9 +34,10 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
+    FileModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, Token],
+  controllers: [AppController, FileController],
+  providers: [AppService, Token, FileService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
