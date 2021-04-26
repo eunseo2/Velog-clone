@@ -13,9 +13,15 @@ import { UserModule } from './user/user.module';
 import { FileController } from './file/file.controller';
 import { FileService } from './file/file.service';
 import { FileModule } from './file/file.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
+console.log(__dirname);
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, '../static'),
+    }),
     TypeOrmModule.forFeature([UserRepository]),
     ConfigModule.forRoot({
       isGlobal: true,
