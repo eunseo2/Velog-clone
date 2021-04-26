@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 
 import { UpdateDto } from 'src/auth/dto/update-user.dto';
+import { User } from 'src/entities/user.entity';
 
 import { UserService } from './user.service';
 
@@ -15,7 +16,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Get(':id')
-  async userInfo(@Param('id') userId: number) {
+  async userInfo(@Param('id') userId: number): Promise<User> {
     const user = await this.userService.userInfo(userId);
     if (!user) {
       throw new NotFoundException(`user with ID ${userId} not found`);
@@ -24,7 +25,10 @@ export class UserController {
   }
 
   @Patch(':id')
-  async patch(@Param('id') Id: number, @Body() updateData: UpdateDto) {
+  async patch(
+    @Param('id') Id: number,
+    @Body() updateData: UpdateDto,
+  ): Promise<{ statusCode: number }> {
     await this.userService.Update(Id, updateData);
     return { statusCode: 200 };
   }

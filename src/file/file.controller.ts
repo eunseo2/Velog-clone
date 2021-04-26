@@ -3,7 +3,6 @@ import {
   Get,
   Param,
   Post,
-  Res,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,35 +11,44 @@ import { diskStorage } from 'multer';
 import { editFileName } from 'src/lib/editFileName';
 import { imageFileFilter } from 'src/lib/imageFileFilter';
 import config from '../config';
+import { FileService } from './file.service';
+
+type File = {
+  originalname: string;
+  filename: string;
+};
 
 @Controller('file')
 export class FileController {
-  @Post('upload')
+  constructor(private readonly fileService: FileService) {}
+  @Post(':id')
   @UseInterceptors(
     FilesInterceptor('image', 20, {
       storage: diskStorage({
-        destination: './files',
+        destination: './static/files',
         filename: editFileName,
       }),
       fileFilter: imageFileFilter,
     }),
   )
-  async uploadMultipleFiles(@UploadedFiles() files) {
+  async uploadMultipleFiles(@Param('id') Id: number, @UploadedFiles() files) {
     const response = [];
-    files.forEach((file) => {
+    files.forEach(async (file: File) => {
       const fileReponse = {
         originalname: file.originalname,
         filename: file.filename,
       };
-
       response.push(fileReponse);
+      await this.fileService.Update(Id, file.filename);
     });
+
     return response;
   }
 
-  @Get(':imgpath')
-  seeUploadedFile(@Param('imgpath') image) {
+  @Get(':id')
+  async seeUploadedFile(@Param('id') Id: number) {
     const API_HOST = config.API_HOST;
-    return `${API_HOST}/files/${image}`;
+    const profile = await this.fileService.getFile(Id);
+    return `${API_HOST}/files/${profile}`;
   }
 }
