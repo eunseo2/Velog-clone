@@ -31,7 +31,10 @@ export class FileController {
       fileFilter: imageFileFilter,
     }),
   )
-  async uploadMultipleFiles(@Param('id') Id: number, @UploadedFiles() files) {
+  async uploadMultipleFiles(
+    @Param('id') Id: number,
+    @UploadedFiles() files,
+  ): Promise<{ statusCode: number }> {
     const response = [];
     files.forEach(async (file: File) => {
       const fileReponse = {
@@ -42,7 +45,7 @@ export class FileController {
       await this.fileService.Update(Id, file.filename);
     });
 
-    return response;
+    return { statusCode: 201 };
   }
 
   @Get(':id')
