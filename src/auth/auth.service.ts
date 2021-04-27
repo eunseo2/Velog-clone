@@ -74,7 +74,7 @@ export class AuthService {
 
   async findUserID(displayName: string) {
     const user = await this.userRepository.findOne({
-      where: { display_name: displayName },
+      where: { displayName: displayName },
     });
     return user;
   }
@@ -141,7 +141,7 @@ export class AuthService {
       provider: provider,
       email: email,
       username: username,
-      display_name: displayName,
+      displayName: displayName,
       intro: intro,
     };
     return this.userRepository.save(Newuser);

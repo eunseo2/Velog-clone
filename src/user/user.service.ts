@@ -15,7 +15,7 @@ export class UserService {
 
   async Update(Id: number, updateData: UpdateDto) {
     const updateUser = {
-      display_name: updateData.displayName,
+      displayName: updateData.displayName,
       intro: updateData.intro,
     };
     const user = await this.userRepository.update(Id, updateUser);
