@@ -48,6 +48,27 @@ export class FileController {
     return { statusCode: 201 };
   }
 
+  @Get()
+  @UseInterceptors(
+    FilesInterceptor('image', 20, {
+      storage: diskStorage({
+        destination: './static/files',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async uploadMultiplefiles(@UploadedFiles() files) {
+    const response = [];
+    files.forEach(async (file: File) => {
+      const fileReponse = {
+        filename: file.filename,
+      };
+      response.push(fileReponse);
+    });
+    return response;
+  }
+
   @Get(':id')
   async seeUploadedFile(@Param('id') Id: number): Promise<string> {
     const profile = await this.fileService.getFile(Id);
