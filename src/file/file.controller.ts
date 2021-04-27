@@ -1,7 +1,9 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
   UploadedFiles,
   UseInterceptors,
@@ -49,8 +51,19 @@ export class FileController {
   }
 
   @Get(':id')
-  async seeUploadedFile(@Param('id') Id: number) {
+  async seeUploadedFile(@Param('id') Id: number): Promise<string> {
     const profile = await this.fileService.getFile(Id);
     return `${profile}`;
+  }
+
+  @Patch(':id')
+  async deleteProfile(
+    @Param('id') Id: number,
+  ): Promise<{ statusCode: number }> {
+    const deleteProfile = {
+      profile: 'NULL',
+    };
+    await this.fileService.deleteProfile(Id, deleteProfile);
+    return { statusCode: 200 };
   }
 }
