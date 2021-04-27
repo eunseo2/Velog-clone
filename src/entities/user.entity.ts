@@ -25,4 +25,6 @@ export class User {
   intro?: string;
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 }

@@ -15,6 +15,8 @@ import { FileService } from './file/file.service';
 import { FileModule } from './file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
+import { Post } from './entities/post.entity';
+import { Tag } from './entities/tag.entity';
 
 console.log(__dirname);
 @Module({
@@ -35,7 +37,7 @@ console.log(__dirname);
       username: process.env.DB_USER,
       password: process.env.DB_PW,
       database: process.env.DB_DATABASE,
-      entities: [User, Google],
+      entities: [User, Google, Post, Tag],
       synchronize: true,
     }),
     AuthModule,
