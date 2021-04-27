@@ -1,6 +1,5 @@
 import {
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
@@ -12,7 +11,6 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName } from 'src/lib/editFileName';
 import { imageFileFilter } from 'src/lib/imageFileFilter';
-import config from '../config';
 import { FileService } from './file.service';
 
 type File = {
@@ -60,8 +58,9 @@ export class FileController {
   async deleteProfile(
     @Param('id') Id: number,
   ): Promise<{ statusCode: number }> {
+    //기본이미지로 변환
     const deleteProfile = {
-      profile: 'NULL',
+      profile: 'https://i.ibb.co/5xqtj6j/2021-04-27-5-45-54.png',
     };
     await this.fileService.deleteProfile(Id, deleteProfile);
     return { statusCode: 200 };
