@@ -50,8 +50,7 @@ export class FileController {
 
   @Get(':id')
   async seeUploadedFile(@Param('id') Id: number) {
-    const API_HOST = config.API_HOST;
     const profile = await this.fileService.getFile(Id);
-    return `${API_HOST}/files/${profile}`;
+    return `${profile}`;
   }
 }

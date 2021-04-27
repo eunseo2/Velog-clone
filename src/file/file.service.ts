@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/entities/user.repository';
+import config from '../config';
+
+const API_HOST = config.API_HOST;
 
 @Injectable()
 export class FileService {
@@ -8,7 +11,7 @@ export class FileService {
   }
   async Update(Id: number, file: string) {
     const updateUser = {
-      profile: file,
+      profile: `${API_HOST}/files/${file}`,
     };
     await this.userRepository.update(Id, updateUser);
   }
