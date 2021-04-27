@@ -5,7 +5,6 @@ import { Provider } from './dto/register-user.dto';
 
 import config from '../config';
 import { Google } from '../entities/Google.entity';
-import { GoogleRepository } from 'src/entities/google.repository';
 
 // 인증코드 6자리 만들때 필요
 // const generateRandom = function (min: number, max: number) {
@@ -26,9 +25,7 @@ export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly mailerService: MailerService,
-    private readonly googleRepository: GoogleRepository,
   ) {
-    this.googleRepository = googleRepository;
     this.userRepository = userRepository;
   }
   async googleLogin(
@@ -38,14 +35,15 @@ export class AuthService {
       throw new Error('Not found user info');
     } else {
       let existsUser = null;
-      let googleUser = null;
-      const { email } = req.user;
+
+      const { email, provider } = req.user;
+
       const API_HOST = config.API_HOST;
       const CLIENT_HOST = config.CLIENT_HOST;
 
       existsUser = await this.userRepository.findOne({ email: email });
+      const url = new URL(CLIENT_HOST);
 
-      console.log(existsUser);
       // 이미 등록된 회원이니까 바로 로그인
       if (existsUser) {
         console.log('이미 등록된 회원입니다.');
@@ -54,12 +52,11 @@ export class AuthService {
         };
       } else {
         // 회원가입 필요함 .
-        googleUser = await this.googleRepository.findOne({ email: email });
-        if (!googleUser) {
-          await this.googleRepository.save(req.user);
-        }
+
         return {
-          url: `${CLIENT_HOST}/auth/register-form?email=${email}`,
+          url:
+            url.toString() +
+            `auth/register-form?email=${email}&provider=${provider}`,
         };
       }
     }
