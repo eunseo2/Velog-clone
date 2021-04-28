@@ -14,16 +14,19 @@ export class ConsumeTokenMiddleware implements NestMiddleware {
   async use(req: any, res: any, next: () => void) {
     const refresh = async (res: any, refreshToken: string) => {
       try {
-        const decoded = await this.token.decodeToken<{ user: User }>(
+        const refreshTokenData = await this.token.decodeToken<{ user: User }>(
           refreshToken,
         );
-        const user = await this.userRepository.findOne(decoded.user.id);
+
+        const user = await this.userRepository.findOne(
+          refreshTokenData.user.id,
+        );
         if (!user) {
           throw new Error('Invalid user error');
         }
         //refresh를 통해서 accessToken을 생성
         const tokens = await this.token.refreshUserToken(
-          decoded.exp,
+          refreshTokenData.exp,
           refreshToken,
         );
 
@@ -62,7 +65,9 @@ export class ConsumeTokenMiddleware implements NestMiddleware {
       }
 
       try {
+        console.log(refreshToken);
         const user = await refresh(res, refreshToken);
+
         req.user = user;
       } catch (e) {
         throw new Error(e);

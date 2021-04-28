@@ -21,7 +21,7 @@ export class Token {
     console.log('payload', payload, options);
     const jwtOptions = {
       issuer: API_HOST,
-      expiresIn: '30d',
+      expiresIn: 1000 * 60 * 60 * 24 * 30,
       ...options,
     };
 
@@ -84,7 +84,7 @@ export class Token {
         },
         {
           subject: 'refresh_token',
-          expiresIn: '30d',
+          expiresIn: '30 days',
         },
       );
     }

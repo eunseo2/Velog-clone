@@ -97,7 +97,7 @@ export class AuthController {
         },
         {
           subject: 'refresh_token',
-          expiresIn: '30d',
+          expiresIn: '30 days',
         },
       );
 
@@ -148,7 +148,7 @@ export class AuthController {
         },
         {
           subject: 'refresh_token',
-          expiresIn: '30d',
+          expiresIn: '30 days',
         },
       );
 
