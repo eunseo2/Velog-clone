@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostRepository } from 'src/entities/post.repository';
 import { TagRepository } from 'src/entities/tag.repository';
@@ -19,6 +24,12 @@ import { PostService } from './post.service';
 export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(ConsumeTokenMiddleware).forRoutes(PostController);
-    consumer.apply(NeedsAuthMiddleware).forRoutes(PostController);
+    consumer.apply(NeedsAuthMiddleware).forRoutes(
+      { path: '/post', method: RequestMethod.POST },
+      {
+        path: '/post/:id',
+        method: RequestMethod.POST,
+      },
+    );
   }
 }

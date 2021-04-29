@@ -33,14 +33,14 @@ export class PostController {
     return { statusCode: 201 };
   }
 
-  @Get(':id')
+  @Post(':id')
   async getPostById(@Param('id') id: number) {
     const post = await this.postService.getPostById(id);
     return post;
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: number, @Body() updatedata) {
-    await this.postService.update(id, updatedata);
-  }
+  // @Patch(':id')
+  // async update(@Param('id') id: number, @Body() updatedata) {
+  //   await this.postService.update(id, updatedata);
+  // }
 }
