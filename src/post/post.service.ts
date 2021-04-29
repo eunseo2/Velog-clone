@@ -29,11 +29,16 @@ export class PostService {
   }
 
   async getAllPosts() {
-    return this.postRepository.find({ relations: ['user'] });
+    return this.postRepository.find({
+      where: { isDelete: 'false' },
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async getPostById(id: number) {
     const post = await this.postRepository.findOne(id, {
+      where: { isDelete: 'false' },
       relations: ['user', 'tags'],
     });
     if (post) {
@@ -41,4 +46,17 @@ export class PostService {
     }
     throw new NotFoundException(id);
   }
+
+  async likeCountUp(id: number) {
+    const post = await this.postRepository.findOne(id);
+    const updatedata = {
+      like: post.like + 1,
+    };
+    this.postRepository.update(id, updatedata);
+  }
+
+  // async update(id: number, updatedata: PostDto) {
+  //   console.log(updatedata);
+  //   await this.postRepository.update(id, updatedata);
+  // }
 }

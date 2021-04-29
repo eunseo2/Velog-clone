@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
 
 import { User } from 'src/entities/user.entity';
 import { PostService } from './post.service';
@@ -20,9 +20,21 @@ export class PostController {
     return posts;
   }
 
+  //like 수 올림
+  @Post(':id')
+  async likeCountUp(@Param('id') id: number): Promise<{ statusCode: number }> {
+    await this.postService.likeCountUp(id);
+    return { statusCode: 201 };
+  }
+
   @Get(':id')
   async getPostById(@Param('id') id: number) {
     const post = await this.postService.getPostById(id);
     return post;
   }
+
+  // @Patch(':id')
+  // async update(@Param('id') id: number, @Body() updatedata) {
+  //   await this.postService.update(id, updatedata);
+  // }
 }
