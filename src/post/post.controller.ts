@@ -27,7 +27,7 @@ export class PostController {
   }
 
   //like 수 올림
-  @Post(':id')
+  @Get(':id')
   async likeCountUp(@Param('id') id: number): Promise<{ statusCode: number }> {
     await this.postService.likeCountUp(id);
     return { statusCode: 201 };
