@@ -107,7 +107,7 @@ export class AuthController {
         },
         {
           subject: 'access_token',
-          expiresIn: '1h',
+          expiresIn: 1000 * 60 * 60,
         },
       );
 
@@ -158,7 +158,7 @@ export class AuthController {
         },
         {
           subject: 'access_token',
-          expiresIn: '1h',
+          expiresIn: 1000 * 60 * 60,
         },
       );
 
