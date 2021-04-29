@@ -20,6 +20,12 @@ export class PostController {
     return posts;
   }
 
+  @Get('trend')
+  async getTrendPosts() {
+    const posts = await this.postService.getTrendPosts();
+    return posts;
+  }
+
   //like 수 올림
   @Post(':id')
   async likeCountUp(@Param('id') id: number): Promise<{ statusCode: number }> {
@@ -33,8 +39,8 @@ export class PostController {
     return post;
   }
 
-  // @Patch(':id')
-  // async update(@Param('id') id: number, @Body() updatedata) {
-  //   await this.postService.update(id, updatedata);
-  // }
+  @Patch(':id')
+  async update(@Param('id') id: number, @Body() updatedata) {
+    await this.postService.update(id, updatedata);
+  }
 }

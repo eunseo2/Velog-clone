@@ -36,6 +36,14 @@ export class PostService {
     });
   }
 
+  async getTrendPosts() {
+    return this.postRepository.find({
+      where: { isDelete: 'false' },
+      relations: ['user'],
+      order: { like: 'DESC' },
+    });
+  }
+
   async getPostById(id: number) {
     const post = await this.postRepository.findOne(id, {
       where: { isDelete: 'false' },
