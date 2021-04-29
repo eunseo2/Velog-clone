@@ -17,24 +17,26 @@ export class Post {
   id: number;
   @Column()
   title: string;
-  @Column()
+  @Column({ type: 'text' })
   description: string;
-  @Column()
-  like: number;
+  @Column({ default: 0 })
+  like?: number;
+  // snake => Camelcase
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
   @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
+  deletedAt?: Date;
   @Column({ name: 'is_delete' })
-  isDelete: boolean;
+  isDelete?: boolean;
 
+  //n:1 관계
   @ManyToOne(() => User, (user) => user.posts, {
     nullable: false,
     onDelete: 'CASCADE',
   })
   user: User;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { cascade: true })
   @JoinTable()
   tags: Tag[];
 }

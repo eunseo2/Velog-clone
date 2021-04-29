@@ -10,13 +10,14 @@ import { UserRepository } from './entities/user.repository';
 import { Token } from './lib/token';
 import { ConsumeTokenMiddleware } from './middleware/consume-token.middleware';
 import { UserModule } from './user/user.module';
-import { FileController } from './file/file.controller';
-import { FileService } from './file/file.service';
+
 import { FileModule } from './file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
 import { Post } from './entities/post.entity';
 import { Tag } from './entities/tag.entity';
+
+import { PostModule } from './post/post.module';
 
 console.log(__dirname);
 @Module({
@@ -43,9 +44,10 @@ console.log(__dirname);
     AuthModule,
     UserModule,
     FileModule,
+    PostModule,
   ],
-  controllers: [AppController, FileController],
-  providers: [AppService, Token, FileService],
+  controllers: [AppController],
+  providers: [AppService, Token],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
