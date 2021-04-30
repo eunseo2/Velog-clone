@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostDto } from 'src/auth/dto/create-post.dto';
+import { Post } from 'src/entities/post.entity';
 
 import { PostRepository } from 'src/entities/post.repository';
 
@@ -28,7 +29,7 @@ export class PostService {
     await this.postRepository.save(newPost);
   }
 
-  async getAllPosts() {
+  async getAllPosts(): Promise<Post[]> {
     return this.postRepository.find({
       where: { isDelete: 'false' },
       relations: ['user'],
@@ -36,7 +37,7 @@ export class PostService {
     });
   }
 
-  async getTrendPosts() {
+  async getTrendPosts(): Promise<Post[]> {
     return this.postRepository.find({
       where: { isDelete: 'false' },
       relations: ['user'],
@@ -44,7 +45,7 @@ export class PostService {
     });
   }
 
-  async getPostById(id: number) {
+  async getPostById(id: number): Promise<Post> {
     const post = await this.postRepository.findOne(id, {
       where: { isDelete: 'false' },
       relations: ['user', 'tags'],
@@ -55,7 +56,7 @@ export class PostService {
     throw new NotFoundException(id);
   }
 
-  async likeCountUp(id: number) {
+  async likeCountUp(id: number): Promise<void> {
     const post = await this.postRepository.findOne(id);
     const updatedata = {
       like: post.like + 1,
