@@ -27,20 +27,20 @@ export class PostController {
   }
 
   //like 수 올림
-  @Get(':id')
+  @Post(':id')
   async likeCountUp(@Param('id') id: number): Promise<{ statusCode: number }> {
     await this.postService.likeCountUp(id);
     return { statusCode: 201 };
   }
 
-  @Post(':id')
+  @Get(':id')
   async getPostById(@Param('id') id: number) {
     const post = await this.postService.getPostById(id);
     return post;
   }
 
-  // @Patch(':id')
-  // async update(@Param('id') id: number, @Body() updatedata) {
-  //   await this.postService.update(id, updatedata);
-  // }
+  @Patch(':id')
+  async update(@Param('id') id: number, @Body() updatedata) {
+    await this.postService.update(id, updatedata);
+  }
 }

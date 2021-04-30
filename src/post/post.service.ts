@@ -63,8 +63,13 @@ export class PostService {
     this.postRepository.update(id, updatedata);
   }
 
-  // async update(id: number, updatedata: PostDto) {
-  //   console.log(updatedata);
-  //   await this.postRepository.update(id, updatedata);
-  // }
+  async update(id: number, updatedata) {
+    const update = {
+      id: id,
+      title: updatedata.title,
+      description: updatedata.description,
+      tags: updatedata.tags,
+    };
+    await this.postRepository.save(update);
+  }
 }
