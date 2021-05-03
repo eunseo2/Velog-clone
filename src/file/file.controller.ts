@@ -33,6 +33,7 @@ export class FileController {
   )
   async uploadMultipleFiles(@Param('id') Id: number, @UploadedFiles() files) {
     const response = [];
+    let profile: string;
     files.forEach(async (file: File) => {
       const fileReponse = {
         filename: file.filename,
@@ -40,33 +41,7 @@ export class FileController {
       response.push(fileReponse);
       await this.fileService.Update(Id, file.filename);
     });
-    return response;
-  }
-
-  @Get()
-  @UseInterceptors(
-    FilesInterceptor('image', 20, {
-      storage: diskStorage({
-        destination: './static/files',
-        filename: editFileName,
-      }),
-      fileFilter: imageFileFilter,
-    }),
-  )
-  async uploadMultiplefiles(@UploadedFiles() files) {
-    const response = [];
-    files.forEach(async (file: File) => {
-      const fileReponse = {
-        filename: file.filename,
-      };
-      response.push(fileReponse);
-    });
-    return response;
-  }
-
-  @Get(':id')
-  async seeUploadedFile(@Param('id') Id: number): Promise<string> {
-    const profile = await this.fileService.getFile(Id);
+    profile = await this.fileService.getFile(Id);
     return `${profile}`;
   }
 
