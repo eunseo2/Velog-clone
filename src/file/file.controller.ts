@@ -33,7 +33,7 @@ export class FileController {
   )
   async uploadMultipleFiles(@Param('id') Id: number, @UploadedFiles() files) {
     const response = [];
-    let profile: string;
+
     files.forEach(async (file: File) => {
       const fileReponse = {
         filename: file.filename,
@@ -41,7 +41,7 @@ export class FileController {
       response.push(fileReponse);
       await this.fileService.Update(Id, file.filename);
     });
-    profile = await this.fileService.getFile(Id);
+    const profile = await this.fileService.getFile(Id);
     return `${profile}`;
   }
 
