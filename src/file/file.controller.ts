@@ -31,13 +31,7 @@ export class FileController {
     }),
   )
   async uploadMultipleFiles(@Param('id') Id: number, @UploadedFiles() files) {
-    const response = [];
-
     files.forEach(async (file: File) => {
-      const fileReponse = {
-        filename: file.filename,
-      };
-      response.push(fileReponse);
       await this.fileService.Update(Id, file.filename);
     });
     const profile = await this.fileService.getFile(Id);
